@@ -1,9 +1,12 @@
-# environments
-.env
+# environments (credentials and .env file)
 env/
+.env
 
 # credentials
 *.json
+
+# data (csv files)
+data/
 
 # python
 __pycache__/
