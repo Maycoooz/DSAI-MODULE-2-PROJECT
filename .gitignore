@@ -1,0 +1,16 @@
+# environments
+.env
+env/
+
+# credentials
+*.json
+
+# python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# dbt
+target/
+dbt_packages/
+logs/
