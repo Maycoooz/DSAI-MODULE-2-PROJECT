@@ -164,6 +164,7 @@
     /* Charts */
     .charts-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
     .charts-grid.wide{grid-template-columns:1fr;}
+    .chart-hero{margin-bottom:16px;}
 
     .card{
       background:rgba(255,255,255,0.03);
@@ -259,22 +260,22 @@
   <div class="insight" style="border-color:var(--mint)">
     <strong>Key insight:</strong> Average order value stayed relatively stable at BRL 120–160 throughout growth, suggesting volume — not price — drove the revenue increase.
   </div>
+  <div class="card chart-hero">
+    <div class="card-label">Monthly Revenue (BRL) -- Black Friday peak annotated</div>
+    <div class="plotly-chart" id="c-sales-revenue"><div class="loading"><div class="spinner"></div>Loading...</div></div>
+  </div>
   <div class="charts-grid">
     <div class="card">
-      <div class="card-label">Monthly Revenue (BRL)</div>
-      <div class="plotly-chart" id="c-sales-revenue"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+      <div class="card-label">Orders and Active Sellers (dual axis)</div>
+      <div class="plotly-chart" id="c-sales-orders"><div class="loading"><div class="spinner"></div>Loading...</div></div>
     </div>
     <div class="card">
-      <div class="card-label">Monthly Order Volume</div>
-      <div class="plotly-chart" id="c-sales-orders"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+      <div class="card-label">Average Order Value Over Time</div>
+      <div class="plotly-chart" id="c-sales-aov"><div class="loading"><div class="spinner"></div>Loading...</div></div>
     </div>
     <div class="card">
-      <div class="card-label">Average Order Value Over Time (BRL)</div>
-      <div class="plotly-chart" id="c-sales-aov"><div class="loading"><div class="spinner"></div>Loading…</div></div>
-    </div>
-    <div class="card">
-      <div class="card-label">Active Sellers Per Month</div>
-      <div class="plotly-chart" id="c-sales-sellers"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+      <div class="card-label">Orders Heatmap -- Month x Year</div>
+      <div class="plotly-chart" id="c-sales-sellers"><div class="loading"><div class="spinner"></div>Loading...</div></div>
     </div>
   </div>
 </section>
@@ -296,22 +297,22 @@
   <div class="insight" style="border-color:var(--teal)">
     <strong>Key insight:</strong> States with the highest on-time delivery rates consistently score above 4.0 stars — poor logistics is the single biggest driver of negative reviews.
   </div>
+  <div class="card chart-hero">
+    <div class="card-label">On-Time Delivery % by Seller State -- coloured by performance</div>
+    <div class="plotly-chart" id="c-del-state"><div class="loading"><div class="spinner"></div>Loading...</div></div>
+  </div>
   <div class="charts-grid">
     <div class="card">
-      <div class="card-label">On-Time Delivery % by Seller State</div>
-      <div class="plotly-chart" id="c-del-state"><div class="loading"><div class="spinner"></div>Loading…</div></div>
-    </div>
-    <div class="card">
       <div class="card-label">Average Delivery Days by State</div>
-      <div class="plotly-chart" id="c-del-days"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+      <div class="plotly-chart" id="c-del-days"><div class="loading"><div class="spinner"></div>Loading...</div></div>
     </div>
     <div class="card">
-      <div class="card-label">Monthly On-Time Delivery Rate (%)</div>
-      <div class="plotly-chart" id="c-del-trend"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+      <div class="card-label">Monthly On-Time Rate Trend</div>
+      <div class="plotly-chart" id="c-del-trend"><div class="loading"><div class="spinner"></div>Loading...</div></div>
     </div>
     <div class="card">
-      <div class="card-label">Review Score vs On-Time % by State</div>
-      <div class="plotly-chart" id="c-del-scatter"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+      <div class="card-label">Review Score vs On-Time % (bubble = revenue)</div>
+      <div class="plotly-chart" id="c-del-scatter"><div class="loading"><div class="spinner"></div>Loading...</div></div>
     </div>
   </div>
 </section>
@@ -333,22 +334,22 @@
   <div class="insight" style="border-color:var(--sky)">
     <strong>Key insight:</strong> São Paulo city alone accounts for more orders than most entire states — making it both the biggest opportunity and the most competitive market on the platform.
   </div>
+  <div class="card chart-hero">
+    <div class="card-label">Total Orders by Customer State</div>
+    <div class="plotly-chart" id="c-cust-state"><div class="loading"><div class="spinner"></div>Loading...</div></div>
+  </div>
   <div class="charts-grid">
     <div class="card">
-      <div class="card-label">Total Orders by Customer State</div>
-      <div class="plotly-chart" id="c-cust-state"><div class="loading"><div class="spinner"></div>Loading…</div></div>
-    </div>
-    <div class="card">
       <div class="card-label">Top 15 Cities by Order Volume</div>
-      <div class="plotly-chart" id="c-cust-cities"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+      <div class="plotly-chart" id="c-cust-cities"><div class="loading"><div class="spinner"></div>Loading...</div></div>
     </div>
     <div class="card">
       <div class="card-label">Average Review Score by State</div>
-      <div class="plotly-chart" id="c-cust-review"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+      <div class="plotly-chart" id="c-cust-review"><div class="loading"><div class="spinner"></div>Loading...</div></div>
     </div>
     <div class="card">
-      <div class="card-label">Total Revenue by Customer State</div>
-      <div class="plotly-chart" id="c-cust-bubble"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+      <div class="card-label">Total Revenue by State (Top 12)</div>
+      <div class="plotly-chart" id="c-cust-bubble"><div class="loading"><div class="spinner"></div>Loading...</div></div>
     </div>
   </div>
 </section>
@@ -370,22 +371,22 @@
   <div class="insight" style="border-color:var(--lavend)">
     <strong>Key insight:</strong> The top 20 sellers by revenue all maintain average review scores above 3.5 — suggesting that on Olist, quality and volume are not a trade-off.
   </div>
+  <div class="card chart-hero">
+    <div class="card-label">Top 20 Sellers by Revenue -- coloured by review score</div>
+    <div class="plotly-chart" id="c-sel-top"><div class="loading"><div class="spinner"></div>Loading...</div></div>
+  </div>
   <div class="charts-grid">
     <div class="card">
-      <div class="card-label">Top 20 Sellers by Revenue (coloured by review score)</div>
-      <div class="plotly-chart" id="c-sel-top"><div class="loading"><div class="spinner"></div>Loading…</div></div>
-    </div>
-    <div class="card">
-      <div class="card-label">Revenue by Seller State (coloured by seller count)</div>
-      <div class="plotly-chart" id="c-sel-state"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+      <div class="card-label">Revenue by Seller State -- coloured by seller count</div>
+      <div class="plotly-chart" id="c-sel-state"><div class="loading"><div class="spinner"></div>Loading...</div></div>
     </div>
     <div class="card">
       <div class="card-label">Review Score vs On-Time % by State</div>
-      <div class="plotly-chart" id="c-sel-scatter"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+      <div class="plotly-chart" id="c-sel-scatter"><div class="loading"><div class="spinner"></div>Loading...</div></div>
     </div>
     <div class="card">
       <div class="card-label">Seller Count by State</div>
-      <div class="plotly-chart" id="c-sel-pie"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+      <div class="plotly-chart" id="c-sel-pie"><div class="loading"><div class="spinner"></div>Loading...</div></div>
     </div>
   </div>
 </section>
@@ -407,22 +408,22 @@
   <div class="insight" style="border-color:var(--rose)">
     <strong>Key insight:</strong> Loyal customers (3+ orders) spend on average <strong>3× more</strong> than one-time buyers — the business case for retention programmes is clear.
   </div>
+  <div class="card chart-hero">
+    <div class="card-label">Customer Segment Breakdown</div>
+    <div class="plotly-chart" id="c-churn-seg"><div class="loading"><div class="spinner"></div>Loading...</div></div>
+  </div>
   <div class="charts-grid">
     <div class="card">
-      <div class="card-label">Customer Segment Breakdown</div>
-      <div class="plotly-chart" id="c-churn-seg"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+      <div class="card-label">Churn Status by Segment</div>
+      <div class="plotly-chart" id="c-churn-status"><div class="loading"><div class="spinner"></div>Loading...</div></div>
     </div>
     <div class="card">
-      <div class="card-label">Churn Status: Active vs At-Risk vs Churned</div>
-      <div class="plotly-chart" id="c-churn-status"><div class="loading"><div class="spinner"></div>Loading…</div></div>
-    </div>
-    <div class="card">
-      <div class="card-label">Average Spend by Customer Segment (BRL)</div>
-      <div class="plotly-chart" id="c-churn-spend"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+      <div class="card-label">Average Spend by Segment (BRL)</div>
+      <div class="plotly-chart" id="c-churn-spend"><div class="loading"><div class="spinner"></div>Loading...</div></div>
     </div>
     <div class="card">
       <div class="card-label">Churn Rate by State (%)</div>
-      <div class="plotly-chart" id="c-churn-state"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+      <div class="plotly-chart" id="c-churn-state"><div class="loading"><div class="spinner"></div>Loading...</div></div>
     </div>
   </div>
 </section>
