@@ -2,8 +2,9 @@
 env/
 .env
 
-# credentials
+# credentials (block GCP key JSON but allow outputs/)
 *.json
+!outputs/*.json
 
 # data (csv files)
 data/
