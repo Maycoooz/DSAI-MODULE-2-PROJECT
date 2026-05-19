@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: fact_order_items
+    description: "Central fact table at order-item grain, joined with orders, payments, reviews"
+    columns:
+      - name: order_item_id
+        tests: [not_null]
+      - name: order_id
+        tests: [not_null]
+      - name: product_id
+        tests: [not_null]
+      - name: seller_id
+        tests: [not_null]
+      - name: delivery_status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['on_time', 'late', 'not_delivered']

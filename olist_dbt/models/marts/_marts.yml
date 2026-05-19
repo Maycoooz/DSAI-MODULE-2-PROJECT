@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: mart_sales_revenue
+    description: "Monthly sales and revenue trends for the sales chapter"
+
+  - name: mart_delivery_performance
+    description: "Delivery performance by seller state and month"
+
+  - name: mart_customer_behaviour
+    description: "Customer spending, reviews and geography by state and city"
+
+  - name: mart_seller_analysis
+    description: "Seller performance: revenue, ratings, delivery, unique customers"
+
+  - name: mart_customer_churn
+    description: "Customer segmentation and churn classification"
