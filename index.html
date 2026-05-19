@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Olist E-Commerce Insights</title>
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+  <style>
+    :root {
+      --green:  #2ecc71;
+      --blue:   #3498db;
+      --orange: #e67e22;
+      --red:    #e74c3c;
+      --purple: #9b59b6;
+      --dark:   #1a1a2e;
+      --card:   #16213e;
+      --text:   #eaeaea;
+      --muted:  #a0a0b0;
+      --border: #2a2a4a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%);
+      padding: 60px 40px 40px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    header h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+    header h1 span { color: var(--green); }
+    header p {
+      color: var(--muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto 28px;
+    }
+
+    .kpi-row {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .kpi-chip {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 20px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .kpi-chip .val { font-weight: 700; color: var(--green); }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(22, 33, 62, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      padding: 12px 20px;
+      flex-wrap: wrap;
+    }
+    nav a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 6px 16px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    nav a:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+    nav a.active { background: var(--green); color: #000; }
+
+    /* ── SECTIONS ── */
+    .chapter {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 60px 30px;
+      border-bottom: 1px solid var(--border);
+    }
+    .chapter-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 8px;
+    }
+    .chapter-num {
+      background: var(--green);
+      color: #000;
+      font-weight: 800;
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+    }
+    .chapter h2 { font-size: 1.8rem; font-weight: 700; }
+    .chapter .subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 32px;
+      padding-left: 2px;
+    }
+
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(560px, 1fr));
+      gap: 20px;
+    }
+    .chart-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      min-height: 420px;
+      display: flex;
+      flex-direction: column;
+    }
+    .chart-card .chart-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    .chart-card .plotly-chart { flex: 1; min-height: 360px; }
+
+    /* loading spinner */
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 360px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      gap: 10px;
+    }
+    .spinner {
+      width: 20px; height: 20px;
+      border: 2px solid var(--border);
+      border-top-color: var(--green);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+    }
+    footer strong { color: var(--green); }
+
+    @media (max-width: 640px) {
+      header h1 { font-size: 1.8rem; }
+      .charts-grid { grid-template-columns: 1fr; }
+      .chapter { padding: 40px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <h1>Olist <span>E-Commerce</span> Insights</h1>
+  <p>Eight chapters of data analysis on Brazil's largest e-commerce marketplace — powered by BigQuery & dbt.</p>
+  <div class="kpi-row">
+    <div class="kpi-chip">Orders <span class="val">99k+</span></div>
+    <div class="kpi-chip">Products <span class="val">33k</span></div>
+    <div class="kpi-chip">Sellers <span class="val">3.1k</span></div>
+    <div class="kpi-chip">States <span class="val">27</span></div>
+    <div class="kpi-chip">Period <span class="val">2016–2018</span></div>
+  </div>
+</header>
+
+<!-- ── NAV ── -->
+<nav id="main-nav">
+  <a href="#sales">Sales & Revenue</a>
+  <a href="#delivery">Delivery</a>
+  <a href="#customers">Customers</a>
+  <a href="#sellers">Sellers</a>
+  <a href="#churn">Churn</a>
+</nav>
+
+<!-- ── CHAPTER 1: SALES ── -->
+<section class="chapter" id="sales">
+  <div class="chapter-header">
+    <span class="chapter-num">01</span>
+    <h2>Sales & Revenue</h2>
+  </div>
+  <p class="subtitle">Monthly trends, order volumes, and average order value across the platform.</p>
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">Monthly Revenue (BRL)</div>
+      <div class="plotly-chart" id="c-sales-revenue"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Monthly Order Volume</div>
+      <div class="plotly-chart" id="c-sales-orders"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Average Order Value Over Time</div>
+      <div class="plotly-chart" id="c-sales-aov"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Active Sellers Per Month</div>
+      <div class="plotly-chart" id="c-sales-sellers"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CHAPTER 2: DELIVERY ── -->
+<section class="chapter" id="delivery">
+  <div class="chapter-header">
+    <span class="chapter-num">02</span>
+    <h2>Delivery Performance</h2>
+  </div>
+  <p class="subtitle">On-time rates, average delivery days, and how delivery quality affects customer reviews.</p>
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">On-Time Delivery % by Seller State</div>
+      <div class="plotly-chart" id="c-del-state"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Average Delivery Days by State</div>
+      <div class="plotly-chart" id="c-del-days"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Monthly On-Time Rate (%)</div>
+      <div class="plotly-chart" id="c-del-trend"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Review Score vs On-Time % by State</div>
+      <div class="plotly-chart" id="c-del-scatter"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CHAPTER 3: CUSTOMERS ── -->
+<section class="chapter" id="customers">
+  <div class="chapter-header">
+    <span class="chapter-num">03</span>
+    <h2>Customer Behaviour</h2>
+  </div>
+  <p class="subtitle">Where customers are, what they spend, and how satisfied they are.</p>
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">Total Orders by Customer State</div>
+      <div class="plotly-chart" id="c-cust-state"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Top 15 Cities by Order Volume</div>
+      <div class="plotly-chart" id="c-cust-cities"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Average Review Score by State</div>
+      <div class="plotly-chart" id="c-cust-review"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Revenue vs Orders by State</div>
+      <div class="plotly-chart" id="c-cust-bubble"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CHAPTER 4: SELLERS ── -->
+<section class="chapter" id="sellers">
+  <div class="chapter-header">
+    <span class="chapter-num">04</span>
+    <h2>Seller Analysis</h2>
+  </div>
+  <p class="subtitle">Top performers, state-level revenue, and the link between ratings and delivery quality.</p>
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">Top 20 Sellers by Revenue</div>
+      <div class="plotly-chart" id="c-sel-top"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Seller Revenue by State</div>
+      <div class="plotly-chart" id="c-sel-state"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Review Score vs On-Time % (Top 200)</div>
+      <div class="plotly-chart" id="c-sel-scatter"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Seller Distribution by State</div>
+      <div class="plotly-chart" id="c-sel-pie"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CHAPTER 5: CHURN ── -->
+<section class="chapter" id="churn">
+  <div class="chapter-header">
+    <span class="chapter-num">05</span>
+    <h2>Customer Churn</h2>
+  </div>
+  <p class="subtitle">Segmenting customers into one-time, occasional, and loyal — and identifying who's at risk.</p>
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">Customer Segment Breakdown</div>
+      <div class="plotly-chart" id="c-churn-seg"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Churn Status: Active vs At-Risk vs Churned</div>
+      <div class="plotly-chart" id="c-churn-status"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Average Spend by Customer Segment</div>
+      <div class="plotly-chart" id="c-churn-spend"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Churn Rate by State (%)</div>
+      <div class="plotly-chart" id="c-churn-state"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p>Built with <strong>BigQuery</strong> · <strong>dbt</strong> · <strong>Plotly</strong> &nbsp;|&nbsp; NTU SCTP DSAI Module 2 Group Project</p>
+</footer>
+
+<script>
+  // ── Dark theme config applied to every chart ──
+  const DARK_LAYOUT = {
+    paper_bgcolor: '#16213e',
+    plot_bgcolor:  '#16213e',
+    font:          { color: '#eaeaea', family: 'Segoe UI, system-ui, sans-serif' },
+    margin:        { t: 30, r: 20, b: 50, l: 60 },
+    legend:        { bgcolor: 'rgba(0,0,0,0)', bordercolor: '#2a2a4a' },
+    xaxis:         { gridcolor: '#2a2a4a', zerolinecolor: '#2a2a4a' },
+    yaxis:         { gridcolor: '#2a2a4a', zerolinecolor: '#2a2a4a' },
+  };
+
+  const CONFIG = { responsive: true, displayModeBar: false };
+
+  async function loadChart(divId, jsonFile) {
+    const el = document.getElementById(divId);
+    try {
+      const res  = await fetch('outputs/' + jsonFile);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const fig  = await res.json();
+      const layout = Object.assign({}, DARK_LAYOUT, fig.layout, {
+        paper_bgcolor: '#16213e',
+        plot_bgcolor:  '#16213e',
+        font: Object.assign({}, DARK_LAYOUT.font, (fig.layout || {}).font),
+      });
+      el.innerHTML = '';
+      Plotly.newPlot(el, fig.data, layout, CONFIG);
+    } catch (e) {
+      el.innerHTML = `<div class="loading" style="color:#e74c3c">Failed to load ${jsonFile}</div>`;
+      console.error(e);
+    }
+  }
+
+  // ── Load all charts ──
+  const charts = [
+    // Sales
+    ['c-sales-revenue', 'sales_monthly_revenue.json'],
+    ['c-sales-orders',  'sales_monthly_orders.json'],
+    ['c-sales-aov',     'sales_avg_order_value.json'],
+    ['c-sales-sellers', 'sales_active_sellers.json'],
+    // Delivery
+    ['c-del-state',   'delivery_on_time_by_state.json'],
+    ['c-del-days',    'delivery_avg_days_by_state.json'],
+    ['c-del-trend',   'delivery_monthly_trend.json'],
+    ['c-del-scatter', 'delivery_score_vs_ontime.json'],
+    // Customers
+    ['c-cust-state',   'customer_orders_by_state.json'],
+    ['c-cust-cities',  'customer_top_cities.json'],
+    ['c-cust-review',  'customer_review_by_state.json'],
+    ['c-cust-bubble',  'customer_revenue_vs_orders.json'],
+    // Sellers
+    ['c-sel-top',     'seller_top20_revenue.json'],
+    ['c-sel-state',   'seller_revenue_by_state.json'],
+    ['c-sel-scatter', 'seller_score_vs_ontime.json'],
+    ['c-sel-pie',     'seller_state_distribution.json'],
+    // Churn
+    ['c-churn-seg',    'churn_segment_breakdown.json'],
+    ['c-churn-status', 'churn_status_breakdown.json'],
+    ['c-churn-spend',  'churn_spend_by_segment.json'],
+    ['c-churn-state',  'churn_rate_by_state.json'],
+  ];
+
+  charts.forEach(([id, file]) => loadChart(id, file));
+
+  // ── Active nav highlight on scroll ──
+  const sections = document.querySelectorAll('.chapter');
+  const navLinks = document.querySelectorAll('nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const link = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
